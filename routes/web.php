@@ -41,12 +41,7 @@ Route::post('/newsletter', [ContactController::class, 'subscribeNewsletter'])->n
 Route::get('/temoignages', [PageController::class, 'testimonials'])->name('temoignages');
 Route::get('/nouvelles', [PageController::class, 'nouvelles'])->name('nouvelles');
 Route::get('/nouvelles/{nouvelle:slug}', [PageController::class, 'nouvelleShow'])->name('nouvelles.show');
-Route::get('/langue/{locale}', function (string $locale) {
-    abort_unless(in_array($locale, ['fr', 'en', 'es'], true), 404);
-    session(['locale' => $locale]);
 
-    return back();
-})->name('lang.switch');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

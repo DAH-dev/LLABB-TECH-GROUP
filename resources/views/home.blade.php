@@ -41,13 +41,13 @@
                     </div>
 
                     <div class="cta-buttons w-100 d-flex gap-4">
-                        <a href="pages/contact-us.html" class="btn btn-get-quotes" 
+                        <a href="{{ route('contact') }}" class="btn btn-get-quotes" 
                         data-aos="fade-right" 
                         data-aos-duration="500" 
                         data-aos-delay="900">
                             Demander un devis
                         </a>
-                        <a href="pages/contact-us.html" class="btn btn-outline" 
+                        <a href="{{ route('contact') }}" class="btn btn-outline" 
                         data-aos="fade-left" 
                         data-aos-duration="500" 
                         data-aos-delay="950">
@@ -70,7 +70,7 @@
                     data-aos-duration="600" 
                     data-aos-delay="0">
                     <h2>Nos Services</h2>
-                    <a href="pages/services.html" class="btn btn-primary">Voir les services</a>
+                    <a href="{{ route('services') }}" class="btn btn-primary">Voir les services</a>
                 </div>
 
                <div class="services-grid">
@@ -85,7 +85,7 @@
                 <h3>{{ $service->titre }}</h3>
                 <p>{{ $service->resume }}</p>
             </div>
-            <a class="overlay-link" href="javascript:void(0)"></a>
+            <a class="overlay-link" href="{{ route('services.show', $service->slug) }}"></a>
         </div>
     @endforeach
 </div>
@@ -153,7 +153,7 @@
                     Blanditiis quod veniam temporibus eaque, a neque nulla.
                 </p>
 
-                <a href="javascript:void(0)" class="btn btn-outline" 
+                <a href="{{ route('contact') }}" class="btn btn-outline" 
                     data-aos="fade-right" 
                     data-aos-duration="500" 
                     data-aos-delay="950">
@@ -196,7 +196,6 @@
     <div class="main d-flex-center pt-8 pb-8">
         <!-- Main Content 2 -->
         <div class="container main-content">
-            <!-- Process section -->
             <!-- Process section -->
             <section class="step-info">
                 <div class="d-flex-center pb-5"
@@ -330,7 +329,7 @@
                     <span class="portfolio-category">{{ $project->category->nom }}</span>
                 </div>
             </div>
-            <a class="overlay-link" href="javascript:void(0)"></a>
+            <a class="overlay-link" href="{{ route('portfolio.show', $project->slug) }}"></a>
         </div>
     @endforeach
 </div>
@@ -467,7 +466,7 @@
                     data-aos-duration="600" 
                     data-aos-delay="0">
                     <h2>Derniers articles du blog</h2>
-                    <a href="pages/blog/blog-column-2.html" class="btn btn-primary">Voir tous les articles</a>
+                    <a href="{{ route('blog') }}" class="btn btn-primary">Voir tous les articles</a>
                 </div>
 
 <div class="blog-grid blog-grid-col3">
@@ -493,13 +492,13 @@
                 <h3 class="blog-title">{{ $article->titre }}</h3>
                 <p class="blog-excerpt">{{ $article->extrait }}</p>
                 <div class="blog-footer">
-                    <a href="javascript:void(0)" class="read-more">
+                    <a href="{{ route('blog.show', $article->slug) }}" class="read-more">
                         Lire la suite
                         <svg><use xlink:href="#arrow-right"></use></svg>
                     </a>
                 </div>
             </div>
-            <a class="overlay-link" href="javascript:void(0)"></a>
+            <a class="overlay-link" href="{{ route('blog.show', $article->slug) }}"></a>
         </article>
     @endforeach
 </div>
