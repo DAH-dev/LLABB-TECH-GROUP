@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <style>
+        /* Le logo et les boutons de l'en-tête ne doivent jamais être écrasés */
+
+
         /* Sous-menus de l'en-tête (scopés sur .nav-menu .has-submenu) */
         .nav-menu .has-submenu { position: relative; }
         .nav-menu .has-submenu > .submenu-wrap {
@@ -92,37 +95,40 @@
             .nav-menu .has-submenu.open .submenu-toggle svg { transform: rotate(180deg); }
         }
 
-              /* Sélecteur de langue (menu déroulant) */
+        /* Sélecteur de langue (menu déroulant) */
         .lang-dropdown {
             position: relative;
             margin-right: 10px;
+            flex-shrink: 0;
         }
         .lang-dropdown-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             background: none;
-            border: 1px solid rgba(128, 128, 128, 0.45);
+            border: 1px solid currentColor;
             border-radius: 20px;
             padding: 6px 10px;
             font-size: 0.8rem;
             font-weight: 600;
+            line-height: 1;
             cursor: pointer;
             color: #fff;
-            transition: background .2s ease, color .2s ease, border-color .2s ease;
+            transition: background .2s ease, color .2s ease;
         }
-        .lang-dropdown-btn:hover { background: rgba(30, 136, 229, 0.15); }
+        .lang-dropdown-btn:hover { background: rgba(128, 128, 128, 0.18); }
         .lang-dropdown-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
         .lang-dropdown-btn .chev { width: 10px; height: 10px; transition: transform .2s ease; }
         .lang-dropdown.open .lang-dropdown-btn .chev { transform: rotate(180deg); }
 
+        /* La liste est déplacée dans <body> par le script : elle ne peut plus être coupée par l'en-tête */
         .lang-dropdown-menu {
             list-style: none;
             margin: 0;
             padding: 6px 0;
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
             min-width: 150px;
             background: #072066;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -132,14 +138,14 @@
             visibility: hidden;
             transform: translateY(6px);
             transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-            z-index: 60;
+            z-index: 9999;
         }
-        .lang-dropdown.open .lang-dropdown-menu {
+        .lang-dropdown-menu.show {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
-        .lang-dropdown-menu li { margin: 0; }
+        .lang-dropdown-menu li { margin: 0; list-style: none; }
         .lang-dropdown-menu button {
             display: block;
             width: 100%;
@@ -155,9 +161,11 @@
         .lang-dropdown-menu button.active { background: rgba(30, 136, 229, 0.35); font-weight: 600; }
 
         @media (max-width: 575px) {
-            .lang-dropdown { margin-right: 6px; }
-            .lang-dropdown-btn { padding: 6px 8px; }
+            .lang-dropdown { margin-right: 4px; }
+            .lang-dropdown-btn { padding: 6px 8px; gap: 4px; }
+            .lang-dropdown-btn svg { width: 14px; height: 14px; }
             .lang-dropdown-btn .chev { display: none; }
+        
         }
 
         /* Masquer l'interface par défaut de Google Translate */
@@ -237,13 +245,13 @@
             </nav>
 
             <div class="actions d-flex-center">
-                                <div class="lang-dropdown notranslate" translate="no" id="langDropdown">
+                <div class="lang-dropdown notranslate" translate="no" id="langDropdown">
                     <button type="button" class="lang-dropdown-btn" id="langDropdownBtn" aria-haspopup="true" aria-expanded="false" aria-label="Langue">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                         <span class="lang-current">FR</span>
                         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
-                    <ul class="lang-dropdown-menu">
+                    <ul class="lang-dropdown-menu notranslate" translate="no" id="langDropdownMenu">
                         <li><button type="button" data-lang="fr">Français</button></li>
                         <li><button type="button" data-lang="en">English</button></li>
                         <li><button type="button" data-lang="es">Español</button></li>
@@ -429,10 +437,14 @@
         var current = getLang();
         var dropdown = document.getElementById('langDropdown');
         var dropdownBtn = document.getElementById('langDropdownBtn');
+        var menu = document.getElementById('langDropdownMenu');
+
+        // La liste est placée directement dans <body> : l'en-tête ne peut plus la couper
+        document.body.appendChild(menu);
 
         // Afficher la langue active
-                dropdown.querySelector('.lang-current').textContent = current.split('-')[0].toUpperCase();
-        dropdown.querySelectorAll('.lang-dropdown-menu button').forEach(function (btn) {
+        dropdown.querySelector('.lang-current').textContent = current.split('-')[0].toUpperCase();
+        menu.querySelectorAll('button').forEach(function (btn) {
             if (btn.getAttribute('data-lang') === current) {
                 btn.classList.add('active');
             }
@@ -441,24 +453,46 @@
             });
         });
 
-        // Ouvrir / fermer la liste
+        // Positionner la liste sous le bouton, sans jamais dépasser de l'écran
+        function placeMenu() {
+            var r = dropdownBtn.getBoundingClientRect();
+            var w = menu.offsetWidth || 150;
+            var left = Math.min(Math.max(8, r.right - w), window.innerWidth - w - 8);
+            menu.style.top = (r.bottom + 8) + 'px';
+            menu.style.left = left + 'px';
+        }
+
+        function openMenu() {
+            placeMenu();
+            dropdown.classList.add('open');
+            menu.classList.add('show');
+            dropdownBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMenu() {
+            dropdown.classList.remove('open');
+            menu.classList.remove('show');
+            dropdownBtn.setAttribute('aria-expanded', 'false');
+        }
+
         dropdownBtn.addEventListener('click', function (e) {
             e.stopPropagation();
-            var open = dropdown.classList.toggle('open');
-            dropdownBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (menu.classList.contains('show')) { closeMenu(); } else { openMenu(); }
         });
         document.addEventListener('click', function (e) {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('open');
-                dropdownBtn.setAttribute('aria-expanded', 'false');
+            if (!dropdown.contains(e.target) && !menu.contains(e.target)) {
+                closeMenu();
             }
         });
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                dropdown.classList.remove('open');
-                dropdownBtn.setAttribute('aria-expanded', 'false');
-            }
+            if (e.key === 'Escape') closeMenu();
         });
+        window.addEventListener('resize', function () {
+            if (menu.classList.contains('show')) placeMenu();
+        });
+        window.addEventListener('scroll', function () {
+            if (menu.classList.contains('show')) placeMenu();
+        }, { passive: true });
 
         // Le script de Google n'est chargé que si une autre langue que le français est choisie
         if (current !== 'fr') {
@@ -474,12 +508,23 @@
             document.body.appendChild(s);
         }
 
-        // Aligner la couleur du bouton sur celle des liens du menu (elle change au scroll et selon le thème)
+        // Couleur du bouton : sur mobile on suit le bouton hamburger (le menu des liens est replié),
+        // sur ordinateur on suit les liens du menu (la couleur change au scroll et selon le thème)
         var refLink = document.querySelector('.nav-menu .nav-link');
+        var burger = document.querySelector('.mobile-menu-toggle');
+        var burgerLine = document.querySelector('.mobile-menu-toggle .hamburger-line');
 
         function syncColor() {
-            if (!refLink) return;
-            dropdownBtn.style.color = getComputedStyle(refLink).color;
+            var color = null;
+            if (burger && burgerLine && getComputedStyle(burger).display !== 'none') {
+                color = getComputedStyle(burgerLine).backgroundColor;
+                if (color === 'rgba(0, 0, 0, 0)' || color === 'transparent') {
+                    color = getComputedStyle(burgerLine).color;
+                }
+            } else if (refLink) {
+                color = getComputedStyle(refLink).color;
+            }
+            if (color) dropdownBtn.style.color = color;
         }
 
         syncColor();
