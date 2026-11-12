@@ -7,7 +7,8 @@
     <meta name="description" content="@yield('description', $settings?->seo_description ?: 'LLABB TECH GROUP - Entreprise spécialisée dans le numérique, la technologie, l\'intelligence artificielle et le marketing digital.')">
     
 
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-transparent-01.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/favicon-180.png') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/aos.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/universal-slider.css') }}">
@@ -17,8 +18,31 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <style>
-        /* Le logo et les boutons de l'en-tête ne doivent jamais être écrasés */
+      
+/* Logo de l'en-tête (horizontal) : on garde les règles du template, on ajuste seulement */
+.header .logo img.logo-img { object-position: left center; }
 
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .header .logo { width: 140px; }
+}
+@media (min-width: 1280px) and (max-width: 1439px) {
+    .header .logo { width: 175px; }
+}
+@media (max-width: 1024px) {
+    .header .logo { width: 40%; min-width: 0; }
+    /* Le bouton "devis" est invisible sur mobile mais prenait quand même sa place */
+    .header .actions .btn-get-quotes { display: none; }
+    .header .actions .theme-switcher { margin: 0 8px; }
+    .header .actions .theme-switcher .theme-toggle-btn {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
+    .header .actions .theme-switcher .theme-toggle-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
 
         /* Sous-menus de l'en-tête (scopés sur .nav-menu .has-submenu) */
         .nav-menu .has-submenu { position: relative; }
@@ -160,13 +184,15 @@
         .lang-dropdown-menu button:hover { background: rgba(255, 255, 255, 0.1); }
         .lang-dropdown-menu button.active { background: rgba(30, 136, 229, 0.35); font-weight: 600; }
 
-        @media (max-width: 575px) {
-            .lang-dropdown { margin-right: 4px; }
-            .lang-dropdown-btn { padding: 6px 8px; gap: 4px; }
-            .lang-dropdown-btn svg { width: 14px; height: 14px; }
-            .lang-dropdown-btn .chev { display: none; }
-        
-        }
+@media (max-width: 575px) {
+    .lang-dropdown { margin-right: 4px; }
+    .lang-dropdown-btn { padding: 6px 8px; gap: 4px; }
+    .lang-dropdown-btn svg { width: 14px; height: 14px; }
+    .lang-dropdown-btn .chev { display: none; }
+}
+@media (max-width: 420px) {
+    .lang-dropdown-btn > svg:first-child { display: none; }
+}
 
         /* Masquer l'interface par défaut de Google Translate */
         #google_translate_element { display: none; }
@@ -205,7 +231,11 @@
     <header class="header">
         <div class="container d-flex-between">
             <div class="logo position-relative">
-                <img class="image" src="{{ asset('assets/images/logo-transparent-01.png') }}" alt="Logo">
+                <img class="image logo-img" id="siteLogo"
+                     src="{{ asset('assets/images/logo-horizontal-negatif.png') }}"
+                     data-light="{{ asset('assets/images/logo-horizontal-couleur.png') }}"
+                     data-dark="{{ asset('assets/images/logo-horizontal-negatif.png') }}"
+                     alt="LLABB TECH GROUP">
                 <a class="overlay-link" href="{{ route('home') }}"></a>
             </div>
 
@@ -285,7 +315,7 @@
                 <div class="footer-content">
                     <div class="footer-section footer-about">
                         <div class="footer-logo">
-                           <img src="{{ asset('assets/images/logo-transparent-01.png') }}" alt="LLABB TECH GROUP Logo" style="height: 42px; width: auto; max-width: 160px;">
+                           <img src="{{ asset('assets/images/logo-horizontal-negatif.png') }}" alt="LLABB TECH GROUP" style="height: 40px; width: auto; max-width: 220px;">
                         </div>
                         <p class="footer-description">
                             <span translate="no">LLABB TECH GROUP</span> accompagne les entreprises avec des solutions numériques, technologiques et d'intelligence artificielle innovantes.
@@ -508,11 +538,23 @@
             document.body.appendChild(s);
         }
 
-        // Couleur du bouton : sur mobile on suit le bouton hamburger (le menu des liens est replié),
-        // sur ordinateur on suit les liens du menu (la couleur change au scroll et selon le thème)
+        // Couleur du bouton + version du logo :
+        // sur mobile on suit le bouton hamburger (le menu des liens est replié),
+        // sur ordinateur on suit les liens du menu. Texte clair = fond foncé = logo blanc ;
+        // texte foncé = fond blanc = logo en couleur.
         var refLink = document.querySelector('.nav-menu .nav-link');
         var burger = document.querySelector('.mobile-menu-toggle');
         var burgerLine = document.querySelector('.mobile-menu-toggle .hamburger-line');
+        var logo = document.getElementById('siteLogo');
+
+        function setLogo(color) {
+            if (!logo) return;
+            var n = color.match(/[\d.]+/g);
+            if (!n || n.length < 3) return;
+            var brightness = 0.299 * n[0] + 0.587 * n[1] + 0.114 * n[2];
+            var wanted = brightness > 140 ? logo.getAttribute('data-dark') : logo.getAttribute('data-light');
+            if (logo.getAttribute('src') !== wanted) logo.setAttribute('src', wanted);
+        }
 
         function syncColor() {
             var color = null;
@@ -524,7 +566,10 @@
             } else if (refLink) {
                 color = getComputedStyle(refLink).color;
             }
-            if (color) dropdownBtn.style.color = color;
+            if (color) {
+                dropdownBtn.style.color = color;
+                setLogo(color);
+            }
         }
 
         syncColor();
