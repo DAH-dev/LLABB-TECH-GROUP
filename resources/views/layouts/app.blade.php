@@ -22,11 +22,12 @@
 /* Logo de l'en-tête (horizontal) : on garde les règles du template, on ajuste seulement */
 .header .logo img.logo-img { object-position: left center; }
 
-@media (min-width: 1025px) and (max-width: 1279px) {
-    .header .logo { width: 140px; }
-}
-@media (min-width: 1280px) and (max-width: 1439px) {
-    .header .logo { width: 175px; }
+@media (min-width: 1025px) {
+    .header .logo {
+        width: 140px;
+        height: 34px;
+        max-width: none;
+    }
 }
 @media (max-width: 1024px) {
     .header .logo { width: 40%; min-width: 0; }
@@ -43,7 +44,43 @@
         height: 18px;
     }
 }
-
+/* Menu mobile : petit panneau bleu sous le hamburger (au lieu d'un écran noir plein page) */
+@media (max-width: 1025px) {
+    .header .navbar {
+        top: 78px;
+        left: auto;
+        right: 16px;
+        width: min(280px, calc(100vw - 32px));
+        height: auto;
+        max-height: calc(100vh - 95px);
+        padding: 6px 0;
+        background-color: #072066;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(6px);
+        transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+    }
+    .header .navbar.mobile-menu-open {
+        top: 78px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+    .header .navbar .nav-menu {
+        padding: 0 1rem;
+        max-width: none;
+        margin: 0;
+    }
+    .header .navbar .nav-menu .nav-link { padding: 0.75rem 0; }
+    .header .navbar .nav-menu > li:last-child .nav-link { border-bottom: none; }
+}
         /* Sous-menus de l'en-tête (scopés sur .nav-menu .has-submenu) */
         .nav-menu .has-submenu { position: relative; }
         .nav-menu .has-submenu > .submenu-wrap {
@@ -205,6 +242,24 @@
         #goog-gt-tt { display: none !important; }
         body { top: 0 !important; }
         .goog-text-highlight { background: none !important; box-shadow: none !important; }
+        /* Pied de page : moins de hauteur, icônes sociales à la taille du logo */
+.footer.footer {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.footer .footer-main { padding: 2rem 0 1rem; }
+@media (max-width: 1024px) {
+    .footer .footer-main { padding: 1.5rem 0 0.75rem; }
+}
+.footer .social-links { gap: 10px !important; }
+.footer .social-links a {
+    width: 28px !important;
+    height: 28px !important;
+}
+.footer .social-links a svg {
+    width: 100% !important;
+    height: 100% !important;
+}
     </style>
 </head>
 <body class="body-1">
@@ -315,7 +370,7 @@
                 <div class="footer-content">
                     <div class="footer-section footer-about">
                         <div class="footer-logo">
-                           <img src="{{ asset('assets/images/logo-horizontal-negatif.png') }}" alt="LLABB TECH GROUP" style="height: 40px; width: auto; max-width: 220px;">
+                          <img src="{{ asset('assets/images/logo-horizontal-negatif.png') }}" alt="LLABB TECH GROUP" style="height: 30px; width: auto; max-width: 100%;">
                         </div>
                         <p class="footer-description">
                             <span translate="no">LLABB TECH GROUP</span> accompagne les entreprises avec des solutions numériques, technologiques et d'intelligence artificielle innovantes.
@@ -326,12 +381,9 @@
                         <h4 class="footer-title">Navigation</h4>
                         <ul class="footer-menu">
                             <li><a href="{{ route('home') }}" class="footer-link">Accueil</a></li>
-                            <li><a href="{{ route('about') }}" class="footer-link">À propos</a></li>
-                            <li><a href="{{ route('team') }}" class="footer-link">Équipe</a></li>
-                            <li><a href="{{ route('services') }}" class="footer-link">Services</a></li>
+                
                             <li><a href="{{ route('portfolio') }}" class="footer-link">Portfolio</a></li>
-                            <li><a href="{{ route('blog') }}" class="footer-link">Blog</a></li>
-                            <li><a href="{{ route('nouvelles') }}" class="footer-link">Nouvelles</a></li>
+                            
                             <li><a href="{{ route('pricing') }}" class="footer-link">Tarifs</a></li>
                             <li><a href="{{ route('temoignages') }}" class="footer-link">Témoignages</a></li>
                             <li><a href="{{ route('faq') }}" class="footer-link">FAQ</a></li>
@@ -586,7 +638,17 @@
         if (headerEl) new MutationObserver(syncColor).observe(headerEl, { attributes: true });
     })();
     </script>
-
+    <script>
+    // Menu mobile : un clic en dehors du panneau le referme
+    document.addEventListener('click', function (e) {
+        var nav = document.getElementById('navbar');
+        var burger = document.getElementById('mobile-menu-toggle');
+        if (nav && burger && nav.classList.contains('mobile-menu-open')
+            && !nav.contains(e.target) && !burger.contains(e.target)) {
+            burger.click();
+        }
+    });
+    </script>
     @yield('scripts')
 </body>
 </html>
