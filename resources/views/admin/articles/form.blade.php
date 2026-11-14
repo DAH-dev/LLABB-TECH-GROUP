@@ -19,14 +19,21 @@
 
         <div class="form-group" style="margin-bottom:16px;">
             <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Catégorie *</label>
-            <select name="article_category_id" required style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
-                <option value="">Sélectionner une catégorie</option>
+            <input type="text" name="categorie" list="categories-list" required maxlength="100" autocomplete="off"
+                   value="{{ old('categorie', $article->category?->nom) }}"
+                   placeholder="Tape une catégorie ou choisis-en une existante"
+                   style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
+            <datalist id="categories-list">
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('article_category_id', $article->article_category_id) == $category->id ? 'selected' : '' }}>
-                        {{ $category->nom }}
-                    </option>
+                    <option value="{{ $category->nom }}"></option>
                 @endforeach
-            </select>
+            </datalist>
+            @error('categorie')
+                <p style="font-size:0.78rem; color:#c0392b; margin-top:4px;">{{ $message }}</p>
+            @enderror
+            <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">
+                Si la catégorie n'existe pas encore, elle sera créée automatiquement.
+            </p>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">

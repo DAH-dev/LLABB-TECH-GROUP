@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -30,6 +31,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateArticle($request);
+        $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['auteur'] = $validated['auteur'] ?: auth()->user()->name;
         $validated['date_publication'] = $validated['date_publication'] ?: now();
@@ -56,6 +58,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validated = $this->validateArticle($request);
+        $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['auteur'] = $validated['auteur'] ?: auth()->user()->name;
 
@@ -87,7 +90,7 @@ class ArticleController extends Controller
     private function validateArticle(Request $request): array
     {
         return $request->validate([
-            'article_category_id' => 'required|exists:article_categories,id',
+            'categorie' => 'required|string|max:100',
             'titre' => 'required|string|max:255',
             'extrait' => 'nullable|string',
             'contenu' => 'required|string',
@@ -96,6 +99,50 @@ class ArticleController extends Controller
             'date_publication' => 'nullable|date',
             'statut' => 'required|in:brouillon,publie',
         ]);
+    }
+
+    /**
+     * Remplace le nom de catégorie saisi par l'id de la catégorie
+     * (la catégorie est créée si elle n'existe pas encore).
+     */
+    private function applyCategory(array $validated): array
+    {
+        $category = $this->findOrCreateCategory($validated['categorie']);
+
+        $validated['article_category_id'] = $category->id;
+        unset($validated['categorie']);
+
+        return $validated;
+    }
+
+    private function findOrCreateCategory(string $nom): ArticleCategory
+    {
+        $nom = trim($nom);
+
+        // Même nom (sans tenir compte des majuscules) : on réutilise la catégorie existante
+        $category = ArticleCategory::whereRaw('LOWER(nom) = ?', [mb_strtolower($nom)])->first();
+
+        if ($category) {
+            return $category;
+        }
+
+        $category = new ArticleCategory();
+        $category->nom = $nom;
+
+        // Certaines tables ont une colonne slug : on la remplit (unique) si elle existe
+        if (Schema::hasColumn('article_categories', 'slug')) {
+            $base = Str::slug($nom) ?: 'categorie';
+            $slug = $base;
+            $i = 2;
+            while (ArticleCategory::where('slug', $slug)->exists()) {
+                $slug = $base . '-' . $i++;
+            }
+            $category->slug = $slug;
+        }
+
+        $category->save();
+
+        return $category;
     }
 
     private function storeImage($file): string
