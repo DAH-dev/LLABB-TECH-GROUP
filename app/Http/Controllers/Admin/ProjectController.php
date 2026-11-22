@@ -30,6 +30,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateProject($request);
+        $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['mis_en_avant'] = $request->boolean('mis_en_avant');
 
@@ -55,6 +56,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $validated = $this->validateProject($request);
+        $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['mis_en_avant'] = $request->boolean('mis_en_avant');
 
@@ -88,7 +90,7 @@ class ProjectController extends Controller
     private function validateProject(Request $request): array
     {
         return $request->validate([
-            'project_category_id' => 'required|exists:project_categories,id',
+            'categorie' => 'required|string|max:100',
             'titre' => 'required|string|max:255',
             'client' => 'nullable|string|max:255',
             'probleme' => 'nullable|string',
@@ -97,6 +99,47 @@ class ProjectController extends Controller
             'image_couverture' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
             'ordre' => 'nullable|integer',
         ]);
+    }
+
+    /**
+     * Remplace le nom de catégorie saisi par l'id de la catégorie
+     * (la catégorie est créée si elle n'existe pas encore).
+     */
+    private function applyCategory(array $validated): array
+    {
+        $category = $this->findOrCreateCategory($validated['categorie']);
+
+        $validated['project_category_id'] = $category->id;
+        unset($validated['categorie']);
+
+        return $validated;
+    }
+
+    private function findOrCreateCategory(string $nom): ProjectCategory
+    {
+        $nom = trim($nom);
+
+        // Même nom (sans tenir compte des majuscules) : on réutilise la catégorie existante
+        $category = ProjectCategory::whereRaw('LOWER(nom) = ?', [mb_strtolower($nom)])->first();
+
+        if ($category) {
+            return $category;
+        }
+
+        // Le slug est obligatoire : il sert aux boutons de filtre du Portfolio. On le rend unique.
+        $base = Str::slug($nom) ?: 'categorie';
+        $slug = $base;
+        $i = 2;
+        while (ProjectCategory::where('slug', $slug)->exists()) {
+            $slug = $base . '-' . $i++;
+        }
+
+        $category = new ProjectCategory();
+        $category->nom = $nom;
+        $category->slug = $slug;
+        $category->save();
+
+        return $category;
     }
 
     private function storeImage($file): string
