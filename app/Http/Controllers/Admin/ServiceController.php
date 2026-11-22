@@ -31,6 +31,9 @@ class ServiceController extends Controller
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['est_actif'] = $request->boolean('est_actif');
 
+        // Ordre facultatif : s'il est vide, le service est placé en dernier
+        $validated['ordre'] = $validated['ordre'] ?? ((int) Service::max('ordre') + 1);
+
         if ($request->hasFile('icone')) {
             $validated['icone'] = $this->storeIcon($request->file('icone'));
         } else {
@@ -54,6 +57,9 @@ class ServiceController extends Controller
         $validated = $this->validateService($request);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['est_actif'] = $request->boolean('est_actif');
+
+        // Ordre facultatif : s'il est vide, on garde l'ordre actuel
+        $validated['ordre'] = $validated['ordre'] ?? $service->ordre ?? 0;
 
         if ($request->hasFile('icone')) {
             if ($service->icone && file_exists(public_path('assets/images/services/' . $service->icone))) {

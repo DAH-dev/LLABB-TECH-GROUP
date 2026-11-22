@@ -60,10 +60,16 @@
                     @endif
                 </p>
             </div>
-            <div class="form-group" style="margin-bottom:16px; width:120px;">
-                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Ordre</label>
-                <input type="number" name="ordre" value="{{ old('ordre', $service->ordre) }}"
+            <div class="form-group" style="margin-bottom:16px; width:160px;">
+                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Ordre (facultatif)</label>
+                <input type="number" name="ordre" value="{{ old('ordre', $service->ordre) }}" placeholder="Auto"
                        style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
+                @error('ordre')
+                    <p style="font-size:0.78rem; color:#c0392b; margin-top:4px;">{{ $message }}</p>
+                @enderror
+                <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">
+                    Laisse vide : le service passe en dernier.
+                </p>
             </div>
         </div>
 
