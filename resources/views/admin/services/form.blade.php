@@ -54,9 +54,9 @@
                 @enderror
                 <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">
                     @if ($service->exists)
-                        Laisse ce champ vide pour garder l'icône actuelle. PNG, SVG ou WEBP (max 2 Mo).
+                        Laisse ce champ vide pour garder l'icône actuelle. Formats acceptés : JPG, PNG, WEBP, GIF, SVG, AVIF, BMP (max 20 Mo).
                     @else
-                        PNG, SVG ou WEBP (max 2 Mo).
+                        Formats acceptés : JPG, PNG, WEBP, GIF, SVG, AVIF, BMP (max 20 Mo).
                     @endif
                 </p>
             </div>

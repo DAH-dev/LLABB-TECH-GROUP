@@ -82,7 +82,7 @@ class TeamMemberController extends Controller
             'nom' => 'required|string|max:255',
             'poste' => 'required|string|max:255',
             'bio' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
+            'photo' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
             'lien_linkedin' => 'nullable|string|max:255',
             'lien_twitter' => 'nullable|string|max:255',
             'ordre' => 'nullable|integer',

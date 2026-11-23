@@ -94,7 +94,7 @@ class ArticleController extends Controller
             'titre' => 'required|string|max:255',
             'extrait' => 'nullable|string',
             'contenu' => 'required|string',
-            'image_a_la_une' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
+            'image_a_la_une' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
             'auteur' => 'nullable|string|max:255',
             'date_publication' => 'nullable|date',
             'statut' => 'required|in:brouillon,publie',
@@ -119,7 +119,6 @@ class ArticleController extends Controller
     {
         $nom = trim($nom);
 
-        // Même nom (sans tenir compte des majuscules) : on réutilise la catégorie existante
         $category = ArticleCategory::whereRaw('LOWER(nom) = ?', [mb_strtolower($nom)])->first();
 
         if ($category) {
@@ -129,7 +128,6 @@ class ArticleController extends Controller
         $category = new ArticleCategory();
         $category->nom = $nom;
 
-        // Certaines tables ont une colonne slug : on la remplit (unique) si elle existe
         if (Schema::hasColumn('article_categories', 'slug')) {
             $base = Str::slug($nom) ?: 'categorie';
             $slug = $base;

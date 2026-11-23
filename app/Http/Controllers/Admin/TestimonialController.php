@@ -85,7 +85,7 @@ class TestimonialController extends Controller
             'entreprise' => 'nullable|string|max:255',
             'texte' => 'required|string',
             'note' => 'required|integer|min:1|max:5',
-            'photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
+            'photo' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
         ]);
     }
 

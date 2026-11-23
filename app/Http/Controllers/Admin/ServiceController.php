@@ -95,7 +95,7 @@ class ServiceController extends Controller
             'methodologie' => 'nullable|string',
             'technologies' => 'nullable|string',
             // "file" et non "image" : certaines versions de Laravel rejettent le SVG avec la règle "image"
-            'icone' => 'nullable|file|mimes:jpeg,jpg,png,webp,svg|max:2048',
+            'icone' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
             'ordre' => 'nullable|integer',
         ]);
     }

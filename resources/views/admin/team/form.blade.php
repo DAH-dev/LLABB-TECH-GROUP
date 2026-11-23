@@ -43,9 +43,9 @@
             @enderror
             <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">
                 @if ($member->exists)
-                    Laisse ce champ vide pour garder la photo actuelle. Formats acceptés : JPG, PNG, WEBP (max 4 Mo).
+                    Laisse ce champ vide pour garder la photo actuelle. Formats acceptés : JPG, PNG, WEBP, GIF, SVG, AVIF, BMP (max 20 Mo).
                 @else
-                    Formats acceptés : JPG, PNG, WEBP (max 4 Mo).
+                    Formats acceptés : JPG, PNG, WEBP, GIF, SVG, AVIF, BMP (max 20 Mo).
                 @endif
             </p>
         </div>

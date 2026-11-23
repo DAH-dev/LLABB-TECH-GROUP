@@ -90,7 +90,7 @@ class NouvelleController extends Controller
             'resume' => 'required|string|max:300',
             'contenu' => 'required|string',
             'date_publication' => 'required|date',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
+            'image' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
         ]);
     }
 

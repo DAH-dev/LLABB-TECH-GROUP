@@ -61,13 +61,11 @@ class ProjectController extends Controller
         $validated['mis_en_avant'] = $request->boolean('mis_en_avant');
 
         if ($request->hasFile('image_couverture')) {
-            // On supprime l'ancienne image du disque si elle existe
             if ($project->image_couverture && file_exists(public_path('assets/images/portfolio/' . $project->image_couverture))) {
                 @unlink(public_path('assets/images/portfolio/' . $project->image_couverture));
             }
             $validated['image_couverture'] = $this->storeImage($request->file('image_couverture'));
         } else {
-            // Pas de nouveau fichier envoyé -> on garde l'image actuelle, on ne l'écrase pas
             unset($validated['image_couverture']);
         }
 
@@ -96,7 +94,7 @@ class ProjectController extends Controller
             'probleme' => 'nullable|string',
             'solution' => 'nullable|string',
             'resultats' => 'nullable|string',
-            'image_couverture' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:4096',
+            'image_couverture' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
             'ordre' => 'nullable|integer',
         ]);
     }
@@ -119,7 +117,6 @@ class ProjectController extends Controller
     {
         $nom = trim($nom);
 
-        // Même nom (sans tenir compte des majuscules) : on réutilise la catégorie existante
         $category = ProjectCategory::whereRaw('LOWER(nom) = ?', [mb_strtolower($nom)])->first();
 
         if ($category) {
