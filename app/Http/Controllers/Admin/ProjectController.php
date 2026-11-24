@@ -33,6 +33,9 @@ class ProjectController extends Controller
         $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['mis_en_avant'] = $request->boolean('mis_en_avant');
+        // Ordre facultatif : s'il est vide, le projet est placé en dernier
+        $validated['ordre'] = $validated['ordre'] ?? ((int) Project::max('ordre') + 1);
+
 
         if ($request->hasFile('image_couverture')) {
             $validated['image_couverture'] = $this->storeImage($request->file('image_couverture'));
@@ -59,6 +62,9 @@ class ProjectController extends Controller
         $validated = $this->applyCategory($validated);
         $validated['slug'] = Str::slug($validated['titre']);
         $validated['mis_en_avant'] = $request->boolean('mis_en_avant');
+        
+        // Ordre facultatif : s'il est vide, on garde l'ordre actuel
+        $validated['ordre'] = $validated['ordre'] ?? $project->ordre ?? 0;
 
         if ($request->hasFile('image_couverture')) {
             if ($project->image_couverture && file_exists(public_path('assets/images/portfolio/' . $project->image_couverture))) {
