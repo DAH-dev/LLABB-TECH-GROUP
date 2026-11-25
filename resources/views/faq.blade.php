@@ -21,103 +21,282 @@
 @endphp
 
 <style>
-    .faq-search { max-width: 700px; margin: 0 auto 32px; }
+    /* Page FAQ : harmonisée avec la charte du site */
+    .faq-page-body {
+        padding-top: 2.5rem !important;
+        padding-bottom: 3rem !important;
+    }
+    .faq-page-body .main-content {
+        gap: 1.75rem !important;
+    }
+
+    .faq-wrapper {
+        max-width: 840px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    /* Barre de recherche avec icône */
+    .faq-search {
+        position: relative;
+        margin-bottom: 1.15rem;
+    }
+    .faq-search svg {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: var(--color-primary, #1e88e5);
+        pointer-events: none;
+    }
     .faq-search input {
         width: 100%;
-        font-size: 1rem;
-        padding: 14px 16px;
-        border: 1px solid var(--color-border);
-        background: transparent;
+        font-size: 0.98rem;
+        padding: 0.85rem 1rem 0.85rem 2.75rem;
+        border-radius: 12px;
+        border: 1px solid rgba(128, 128, 128, 0.28);
+        background: rgba(128, 128, 128, 0.05);
         color: inherit;
+        transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
-    .faq-filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
-    .faq-filter-btn {
-        font-size: 0.86rem;
-        padding: 9px 16px;
-        border: 1px solid var(--color-border);
-        background: transparent;
-        color: var(--color-text-secondary);
-        cursor: pointer;
+    .faq-search input:focus {
+        border-color: var(--color-primary, #1e88e5);
+        background: rgba(30, 136, 229, 0.04);
+        box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.14);
     }
-    .faq-filter-btn:hover { color: inherit; border-color: var(--color-primary); }
-    .faq-filter-btn.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
 
-    .faq-accordion { max-width: 800px; margin: 0 auto; }
-    .faq-group { margin-bottom: 40px; }
-    .faq-group h2 { font-size: 1.1rem; color: var(--color-text-secondary); margin-bottom: 8px; }
-    .faq-list { border-top: 1px solid var(--color-border); }
-    .faq-item { border-bottom: 1px solid var(--color-border); }
+    /* Filtres en pastilles */
+    .faq-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin-bottom: 1.75rem;
+    }
+    .faq-filter-btn {
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        background: rgba(128, 128, 128, 0.06);
+        color: inherit;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .faq-filter-btn:hover {
+        border-color: var(--color-primary, #1e88e5);
+        color: var(--color-primary, #1e88e5);
+    }
+    .faq-filter-btn.active {
+        background: var(--color-primary, #1e88e5);
+        border-color: var(--color-primary, #1e88e5);
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    /* Groupes par catégorie */
+    .faq-group {
+        margin-bottom: 1.75rem;
+    }
+    .faq-group:last-child {
+        margin-bottom: 0;
+    }
+    .faq-group-head {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-bottom: 0.75rem;
+    }
+    .faq-group-head h2 {
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-primary, #1e88e5);
+        margin: 0;
+    }
+    .faq-group-count {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.12rem 0.55rem;
+        border-radius: 999px;
+        background: rgba(30, 136, 229, 0.14);
+        color: var(--color-primary, #1e88e5);
+    }
+
+    /* Accordéon en cartes */
+    .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+    }
+    .faq-item {
+        border: 1px solid rgba(128, 128, 128, 0.24);
+        border-radius: 10px;
+        background: rgba(128, 128, 128, 0.05);
+        padding: 0 1.2rem;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .faq-item[data-open="true"] {
+        border-color: var(--color-primary, #1e88e5);
+        background: rgba(30, 136, 229, 0.06);
+    }
     .faq-item button {
         width: 100%;
         text-align: left;
         background: none;
         border: none;
         cursor: pointer;
-        padding: 22px 0;
+        padding: 1rem 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 20px;
-        font-size: 1.05rem;
+        gap: 1rem;
+        font-size: 1.02rem;
         font-weight: 600;
         color: inherit;
+        line-height: 1.4;
     }
-    .faq-item .faq-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .faq-item[data-open="true"] .faq-panel { max-height: 300px; }
-    .faq-item p { color: var(--color-text-secondary); padding-bottom: 22px; margin: 0; max-width: 68ch; }
-    .faq-item .plus { transition: transform 0.2s ease; flex-shrink: 0; color: var(--color-primary); font-size: 1.3rem; }
-    .faq-item[data-open="true"] .plus { transform: rotate(45deg); }
+    .faq-item .faq-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    .faq-item[data-open="true"] .faq-panel {
+        max-height: 360px;
+    }
+    .faq-item p {
+        padding-bottom: 1.1rem;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.65;
+        opacity: 0.88;
+        max-width: 72ch;
+    }
+    .faq-item .plus {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(30, 136, 229, 0.14);
+        color: var(--color-primary, #1e88e5);
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1;
+        flex-shrink: 0;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .faq-item[data-open="true"] .plus {
+        transform: rotate(45deg);
+        background: var(--color-primary, #1e88e5);
+        color: #ffffff;
+    }
 
-    .faq-empty { display: none; text-align: center; padding: 60px 0; color: var(--color-text-secondary); }
-    .faq-empty.show { display: block; }
+    /* Message vide */
+    .faq-empty {
+        display: none;
+        text-align: center;
+        padding: 2.25rem 1.25rem;
+        border-radius: 12px;
+        border: 1px dashed rgba(128, 128, 128, 0.3);
+        background: rgba(128, 128, 128, 0.04);
+        opacity: 0.85;
+    }
+    .faq-empty.show {
+        display: block;
+    }
+
+    /* Bandeau CTA bleu #072066 */
+    .faq-cta-banner {
+        max-width: 840px;
+        width: 100%;
+        margin: 0.5rem auto 0;
+        padding: 1.6rem 1.85rem;
+        border-radius: 12px;
+        background: #072066;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+    }
+    .faq-cta-banner h3,
+    .faq-cta-banner p {
+        color: #ffffff !important;
+        margin: 0;
+    }
+    .faq-cta-banner h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+    }
+    .faq-cta-banner p {
+        font-size: 0.9rem;
+        opacity: 0.86;
+        line-height: 1.5;
+    }
 </style>
 
-<div class="main d-flex-center pt-8 pb-8">
+<div class="main d-flex-center faq-page-body">
     <div class="container main-content">
 
-        <div class="faq-search">
-            <input type="search" id="faqSearch" placeholder="Rechercher une question…" aria-label="Rechercher une question">
-        </div>
+        <div class="faq-wrapper">
 
-        <div class="faq-filters" id="faqFilters">
-            <button class="faq-filter-btn active" data-filter="all">Toutes</button>
-            @foreach ($labels as $slug => $label)
-                @if ($grouped->has($slug))
-                    <button class="faq-filter-btn" data-filter="{{ $slug }}">{{ $label }}</button>
-                @endif
-            @endforeach
-        </div>
-
-        <div class="faq-accordion" id="faqAccordion">
-            @foreach ($labels as $slug => $label)
-                @if ($grouped->has($slug))
-                    <div class="faq-group" data-group="{{ $slug }}">
-                        <h2>{{ $label }}</h2>
-                        <div class="faq-list">
-                            @foreach ($grouped[$slug]->sortBy('ordre') as $index => $item)
-                                <div class="faq-item" data-open="{{ $loop->first && $slug === 'general' ? 'true' : 'false' }}">
-                                    <button type="button">
-                                        {{ $item->question }}
-                                        <span class="plus">+</span>
-                                    </button>
-                                    <div class="faq-panel">
-                                        <p>{{ $item->reponse }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        </div>
-
-        <div class="faq-empty" id="faqEmpty">Aucune question ne correspond à votre recherche.</div>
-
-        <section class="pt-8">
-            <div class="d-flex-center">
-                <a href="{{ route('home') }}#contact" class="btn btn-primary">Vous ne trouvez pas votre réponse ? Contactez-nous</a>
+            <div class="faq-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" id="faqSearch" placeholder="Rechercher une question ou un mot-clé…" aria-label="Rechercher une question">
             </div>
-        </section>
+
+            <div class="faq-filters" id="faqFilters">
+                <button type="button" class="faq-filter-btn active" data-filter="all">Toutes</button>
+                @foreach ($labels as $slug => $label)
+                    @if ($grouped->has($slug))
+                        <button type="button" class="faq-filter-btn" data-filter="{{ $slug }}">{{ $label }}</button>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="faq-accordion" id="faqAccordion">
+                @foreach ($labels as $slug => $label)
+                    @if ($grouped->has($slug))
+                        <div class="faq-group" data-group="{{ $slug }}">
+                            <div class="faq-group-head">
+                                <h2>{{ $label }}</h2>
+                                <span class="faq-group-count">{{ $grouped[$slug]->count() }}</span>
+                            </div>
+                            <div class="faq-list">
+                                @foreach ($grouped[$slug]->sortBy('ordre') as $index => $item)
+                                    <div class="faq-item" data-open="{{ $loop->first && $slug === 'general' ? 'true' : 'false' }}">
+                                        <button type="button">
+                                            <span>{{ $item->question }}</span>
+                                            <span class="plus">+</span>
+                                        </button>
+                                        <div class="faq-panel">
+                                            <p>{{ $item->reponse }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="faq-empty" id="faqEmpty">Aucune question ne correspond à votre recherche.</div>
+
+        </div>
+
+        <div class="faq-cta-banner">
+            <div>
+                <h3>Vous ne trouvez pas votre réponse ?</h3>
+                <p>Notre équipe vous répond rapidement pour éclaircir vos besoins techniques ou budgétaires.</p>
+            </div>
+            <a href="{{ route('contact') }}" class="btn btn-primary">Contactez-nous</a>
+        </div>
 
     </div>
 </div>
@@ -144,7 +323,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             group.querySelectorAll('.faq-item').forEach(function (item) {
                 var questionText = item.querySelector('button').textContent.toLowerCase();
-                var matchesQuery = query === '' || questionText.indexOf(query) !== -1;
+                var answerText = item.querySelector('.faq-panel').textContent.toLowerCase();
+                var matchesQuery = query === '' || questionText.indexOf(query) !== -1 || answerText.indexOf(query) !== -1;
                 var visible = groupMatches && matchesQuery;
                 item.hidden = !visible;
                 if (visible) groupVisibleCount++;
