@@ -44,17 +44,20 @@
 
         <div class="form-group" style="margin-bottom:16px;">
             <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Problématique</label>
-            <textarea name="probleme" rows="3" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('probleme', $project->probleme) }}</textarea>
+            <textarea name="probleme" rows="5" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('probleme', $project->probleme) }}</textarea>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">
             <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Solution</label>
-            <textarea name="solution" rows="3" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('solution', $project->solution) }}</textarea>
+            <textarea name="solution" rows="5" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('solution', $project->solution) }}</textarea>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">
             <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Résultats</label>
-            <textarea name="resultats" rows="3" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('resultats', $project->resultats) }}</textarea>
+            <textarea name="resultats" rows="5" style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">{{ old('resultats', $project->resultats) }}</textarea>
+            <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">
+                Mise en forme pour Problématique, Solution et Résultats : une ligne = un paragraphe. Commence une ligne par « - » pour faire une liste à puces, ou par « 1. », « 2. » pour une liste numérotée.
+            </p>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">

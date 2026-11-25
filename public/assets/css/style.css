@@ -444,8 +444,13 @@ body {
   display: grid;
   -ms-grid-columns: repeat(1, 1fr);
   grid-template-columns: repeat(1, 1fr);
-  gap: 8rem;
+  gap: 3.5rem;
   /* Styles for the 'About Our Company' section */
+}
+@media (max-width: 1024px) {
+  .main .main-content {
+    gap: 2.5rem;
+  }
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .main .main-content {

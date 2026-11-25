@@ -3,126 +3,246 @@
 @section('title', 'À propos - LLABB TECH GROUP')
 
 @section('content')
-
-<!-- Hero compact (pages intérieures) -->
-<section style="position: relative; overflow: hidden; padding:110px 0 70px;">
-    <!-- <img src="{{ asset('assets/images/backgrounds/hand-ia-bgremove.png') }}" alt=""
-         style="position:absolute; top:50%; left:0; transform:translateY(-50%); max-width:45%; pointer-events:none; z-index:0;"> -->
-    <div class="container" style="position:relative; z-index:1;">
-        <div style="max-width: 620px; margin-left: auto;">
-            <h1 class="text-white heading-hero text-shadow" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
-                Nous construisons des systèmes IA qui comptent.
-            </h1>
-
-            <p class="text-white text-shadow--strong pt-3" data-aos="fade-up" data-aos-duration="600" data-aos-delay="500">
-                LLABB TECH GROUP est une agence basée à Abidjan qui conçoit des solutions digitales, IT et d'intelligence artificielle pour des entreprises qui veulent avancer plus vite.
-            </p>
-
-            <div class="d-flex gap-4 pt-4" style="flex-wrap: wrap;" data-aos="fade-in" data-aos-duration="400" data-aos-delay="700">
-                <div>
-                    <span class="text-primary" style="font-weight:700;">4</span>
-                    <span class="text-white"> domaines d'expertise</span>
-                </div>
-                <div>
-                    <span class="text-primary" style="font-weight:700;">Abidjan</span>
-                    <span class="text-white"> Côte d'Ivoire</span>
-                </div>
-                <div>
-                    <span class="text-primary" style="font-weight:700;">Sur-mesure</span>
-                    <span class="text-white"> chaque projet</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <style>
-    /* Composants éditoriaux propres à la page À propos */
+    /* Hero À propos (compact) */
+    .about-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 90px 0 46px;
+    }
+    .about-hero-inner {
+        max-width: 720px;
+    }
+    .about-eyebrow {
+        display: inline-block;
+        color: var(--color-primary, #1e88e5);
+        font-weight: 600;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+    }
+    .about-hero-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem 2rem;
+        margin-top: 1.15rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .about-hero-stat strong {
+        display: block;
+        color: var(--color-primary, #1e88e5);
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .about-hero-stat span {
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.84rem;
+    }
+
+    /* Écrase le "gap: 8rem" de .main-content dans style.css */
+    .about-page-body {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    .about-page-body .main-content {
+        gap: 1.75rem !important;
+    }
+    .about-page-body .heading-lg {
+        margin-bottom: 0 !important;
+        font-size: 1.85rem;
+    }
+
+    .about-sec-head {
+        margin-bottom: 0.85rem;
+    }
+    .about-sec-head h2 {
+        margin: 0;
+    }
+
+    /* Histoire */
+    .about-page-body .about-our-company {
+        align-items: center;
+    }
+    .about-page-body .about-our-company .about-info,
+    .about-page-body .about-our-company .about-texts {
+        padding-bottom: 0 !important;
+    }
+    .about-page-body .about-our-company .about-image {
+        height: auto;
+        max-height: 300px;
+    }
+    .about-page-body .about-our-company .about-image img {
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Mission & Vision */
     .about-split {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        border: 1px solid var(--color-border);
+        gap: 1rem;
     }
-    .about-split > div { padding: 44px 40px; }
-    .about-split > div:first-child {
-        border-right: 1px solid var(--color-border);
-        background: var(--color-surface, rgba(0,0,0,0.02));
+    .about-split-card {
+        padding: 1.25rem 1.4rem;
+        border-radius: 12px;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        background: rgba(128, 128, 128, 0.06);
+        border-top: 3px solid var(--color-primary, #1e88e5);
     }
-    .about-split h3 {
+    .about-split-card.is-vision {
+        border-top-color: #072066;
+        background: rgba(7, 32, 102, 0.06);
+    }
+    .about-split-card h3 {
         font-size: 1.05rem;
-        color: var(--color-text-secondary);
-        margin-bottom: 14px;
+        margin: 0 0 0.4rem;
+        color: var(--color-primary, #1e88e5);
     }
-    .about-split p { font-size: 1.1rem; margin: 0; }
+    .about-split-card p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin: 0;
+    }
 
-    .about-values { list-style: none; margin: 0; padding: 0; }
+    /* Valeurs */
+    .about-values {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
     .about-values li {
         display: grid;
-        grid-template-columns: 220px 1fr;
-        gap: 32px;
-        padding: 26px 0;
-        border-top: 1px solid var(--color-border);
+        grid-template-columns: 200px 1fr;
+        gap: 1rem;
+        padding: 0.75rem 0.85rem;
+        border-top: 1px solid rgba(128, 128, 128, 0.22);
         align-items: baseline;
+        border-radius: 8px;
+        transition: background 0.2s ease;
     }
-    .about-values li:last-child { border-bottom: 1px solid var(--color-border); }
+    .about-values li:hover {
+        background: rgba(128, 128, 128, 0.05);
+    }
+    .about-values li:last-child {
+        border-bottom: 1px solid rgba(128, 128, 128, 0.22);
+    }
     .about-values .name {
-        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.05rem;
         font-weight: 600;
-        color: var(--color-primary);
+        color: var(--color-primary, #1e88e5);
     }
-    .about-values p { margin: 0; color: var(--color-text-secondary); }
+    .about-values .num {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        background: rgba(30, 136, 229, 0.14);
+        color: var(--color-primary, #1e88e5);
+    }
+    .about-values p {
+        margin: 0;
+        font-size: 0.94rem;
+        line-height: 1.5;
+        opacity: 0.88;
+    }
 
-    .about-accordion { border-top: 1px solid var(--color-border); }
-    .about-exp-item { border-bottom: 1px solid var(--color-border); }
+    /* Expertise (accordéon) */
+    .about-accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+    .about-exp-item {
+        border: 1px solid rgba(128, 128, 128, 0.24);
+        border-radius: 10px;
+        background: rgba(128, 128, 128, 0.05);
+        padding: 0 1.1rem;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .about-exp-item[data-open="true"] {
+        border-color: var(--color-primary, #1e88e5);
+        background: rgba(30, 136, 229, 0.06);
+    }
     .about-exp-item button {
         width: 100%;
         text-align: left;
         background: none;
         border: none;
         cursor: pointer;
-        padding: 24px 0;
+        padding: 0.8rem 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 1.1rem;
+        gap: 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
-        color: var(--color-text-primary, inherit);
+        color: inherit;
     }
     .about-exp-item .about-exp-panel {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
     }
-    .about-exp-item[data-open="true"] .about-exp-panel { max-height: 200px; }
-    .about-exp-item p { color: var(--color-text-secondary); padding-bottom: 24px; margin: 0; }
-    .about-exp-item .plus { transition: transform 0.2s ease; }
-    .about-exp-item[data-open="true"] .plus { transform: rotate(45deg); }
+    .about-exp-item[data-open="true"] .about-exp-panel {
+        max-height: 160px;
+    }
+    .about-exp-item p {
+        padding-bottom: 0.8rem;
+        margin: 0;
+        font-size: 0.93rem;
+        line-height: 1.5;
+        opacity: 0.86;
+    }
+    .about-exp-item .plus {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(30, 136, 229, 0.14);
+        color: var(--color-primary, #1e88e5);
+        font-weight: 700;
+        flex-shrink: 0;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .about-exp-item[data-open="true"] .plus {
+        transform: rotate(45deg);
+        background: var(--color-primary, #1e88e5);
+        color: #fff;
+    }
 
-    /* Équipe (même design que la page Équipe dédiée) */
+    /* Équipe */
     .about-team .team-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 28px;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
     }
     .about-team .member-card {
-        background: #fff;
-        border: 1px solid #e4e9f2;
-        border-radius: 14px;
+        background: rgba(128, 128, 128, 0.06);
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 16px rgba(16, 32, 61, 0.06);
         display: flex;
         flex-direction: column;
-        transition: transform .2s ease, box-shadow .2s ease;
+        transition: transform 0.2s ease, border-color 0.2s ease;
     }
     .about-team .member-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 24px rgba(16, 32, 61, 0.12);
+        transform: translateY(-3px);
+        border-color: var(--color-primary, #1e88e5);
     }
     .about-team .member-photo {
         width: 100%;
         aspect-ratio: 1 / 1;
         overflow: hidden;
-        background: #eef2fa;
+        background: rgba(128, 128, 128, 0.12);
     }
     .about-team .member-photo img {
         width: 100%;
@@ -131,63 +251,119 @@
         display: block;
     }
     .about-team .member-body {
-        padding: 20px 18px 24px;
+        padding: 0.9rem 0.85rem 1.05rem;
         text-align: center;
     }
     .about-team .member-name {
         display: block;
         font-weight: 700;
-        font-size: 1.05rem;
-        color: var(--color-text-primary, #10203d);
+        font-size: 0.98rem;
     }
     .about-team .member-role {
         display: block;
-        margin-top: 4px;
-        font-size: 0.88rem;
+        margin-top: 0.15rem;
+        font-size: 0.84rem;
         font-weight: 600;
-        color: var(--color-primary);
+        color: var(--color-primary, #1e88e5);
     }
     .about-team .member-socials {
         display: flex;
         justify-content: center;
-        gap: 10px;
-        margin-top: 14px;
+        gap: 0.5rem;
+        margin-top: 0.65rem;
     }
     .about-team .member-socials a {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: #eef2fa;
-        color: var(--color-primary);
-        transition: background .2s ease, color .2s ease;
+        background: rgba(30, 136, 229, 0.14);
+        color: var(--color-primary, #1e88e5);
+        transition: background 0.2s ease, color 0.2s ease;
     }
     .about-team .member-socials a:hover {
-        background: var(--color-primary);
+        background: var(--color-primary, #1e88e5);
         color: #fff;
     }
     .about-team .member-socials svg {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
+    }
+
+    /* Bandeau CTA final */
+    .about-cta-banner {
+        padding: 1.45rem 1.65rem;
+        border-radius: 12px;
+        background: #072066;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+    }
+    .about-cta-banner h3,
+    .about-cta-banner p {
+        color: #ffffff !important;
+        margin: 0;
+    }
+    .about-cta-banner h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+    }
+    .about-cta-banner p {
+        font-size: 0.9rem;
+        opacity: 0.86;
+        max-width: 54ch;
+        line-height: 1.45;
     }
 
     @media (max-width: 800px) {
         .about-split { grid-template-columns: 1fr; }
-        .about-split > div:first-child { border-right: none; border-bottom: 1px solid var(--color-border); }
-        .about-values li { grid-template-columns: 1fr; gap: 6px; }
+        .about-values li { grid-template-columns: 1fr; gap: 0.3rem; }
     }
 </style>
 
-<div class="main d-flex-center pt-8 pb-8">
+<!-- Hero compact (pages intérieures) -->
+<section class="about-hero">
+    <div class="container">
+        <div class="about-hero-inner">
+            <span class="about-eyebrow" data-aos="fade-down" data-aos-duration="600">À propos de LLABB TECH GROUP</span>
+            <h1 class="text-white heading-hero text-shadow" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
+                Nous construisons des systèmes IA qui comptent.
+            </h1>
+
+            <p class="text-white text-shadow--strong pt-2" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+                LLABB TECH GROUP est une agence basée à Abidjan qui conçoit des solutions digitales, IT et d'intelligence artificielle pour des entreprises qui veulent avancer plus vite.
+            </p>
+
+            <div class="about-hero-stats" data-aos="fade-up" data-aos-duration="500" data-aos-delay="500">
+                <div class="about-hero-stat">
+                    <strong>5 pôles</strong>
+                    <span>Domaines d'expertise</span>
+                </div>
+                <div class="about-hero-stat">
+                    <strong>Abidjan</strong>
+                    <span>Côte d'Ivoire</span>
+                </div>
+                <div class="about-hero-stat">
+                    <strong>100 % Sur-mesure</strong>
+                    <span>Chaque projet</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="main d-flex-center about-page-body">
     <div class="container main-content">
 
         <!-- Histoire -->
-        <section class="about-our-company">
-            <div class="about-info pb-4">
-                <div class="about-texts pb-4">
-                    <h4 class="text-accent">Notre histoire</h4>
+        <section class="about-section about-our-company">
+            <div class="about-info">
+                <div class="about-texts">
+                    <span class="about-eyebrow">Notre histoire</span>
                     <h2 class="about-info-title">Une conviction simple : la technologie comme levier de croissance</h2>
                     <p>
                         LLABB TECH GROUP est né d'une conviction simple : la technologie doit être un levier
@@ -208,52 +384,56 @@
             </div>
         </section>
 
-        <!-- Mission & Vision (disposition "split") -->
-        <section class="pt-8">
+        <!-- Mission & Vision -->
+        <section class="about-section">
             <div class="about-split">
-                <div>
-                    <h3>Mission</h3>
+                <div class="about-split-card">
+                    <span class="about-eyebrow">Cap quotidien</span>
+                    <h3>Notre Mission</h3>
                     <p>Rendre la technologie accessible et rentable pour toute entreprise, à travers des solutions digitales, des outils d'IA et des stratégies marketing qui génèrent un impact concret.</p>
                 </div>
-                <div>
-                    <h3>Vision</h3>
+                <div class="about-split-card is-vision">
+                    <span class="about-eyebrow">Horizon</span>
+                    <h3>Notre Vision</h3>
                     <p>Devenir une référence du numérique et de l'intelligence artificielle en Afrique de l'Ouest, reconnue pour la qualité de ses réalisations et la confiance durable qu'elle construit.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Valeurs (disposition liste éditoriale) -->
-        <section class="pt-8">
-            <div class="d-flex-center pb-5">
+        <!-- Valeurs -->
+        <section class="about-section">
+            <div class="about-sec-head">
+                <span class="about-eyebrow">Ce qui nous guide</span>
                 <h2 class="heading-lg">Nos valeurs</h2>
             </div>
             <ul class="about-values">
                 <li>
-                    <span class="name">Innovation</span>
+                    <span class="name"><span class="num">01</span>Innovation</span>
                     <p>Nous explorons en continu les technologies émergentes — IA, automatisation, données — pour proposer des solutions à la pointe plutôt que suivre la tendance.</p>
                 </li>
                 <li>
-                    <span class="name">Excellence</span>
+                    <span class="name"><span class="num">02</span>Excellence</span>
                     <p>Chaque livrable répond à des standards élevés de qualité, de performance et de sécurité, du premier prototype à la mise en production.</p>
                 </li>
                 <li>
-                    <span class="name">Transparence</span>
+                    <span class="name"><span class="num">03</span>Transparence</span>
                     <p>Une relation client fondée sur l'écoute, des points d'étape réguliers et un suivi rigoureux, sans zones d'ombre sur l'avancement du projet.</p>
                 </li>
                 <li>
-                    <span class="name">Agilité</span>
+                    <span class="name"><span class="num">04</span>Agilité</span>
                     <p>Des méthodes de travail qui s'adaptent aux besoins évolutifs de chaque client, du cadrage initial jusqu'à la mise en ligne.</p>
                 </li>
                 <li>
-                    <span class="name">Impact</span>
+                    <span class="name"><span class="num">05</span>Impact</span>
                     <p>Nous mesurons notre réussite à la valeur concrète que nos solutions apportent — visibilité, efficacité, croissance.</p>
                 </li>
             </ul>
         </section>
 
         <!-- Expertise (accordéon) -->
-        <section class="pt-8">
-            <div class="d-flex-center pb-5">
+        <section class="about-section">
+            <div class="about-sec-head">
+                <span class="about-eyebrow">Savoir-faire</span>
                 <h2 class="heading-lg">Nos domaines d'expertise</h2>
             </div>
             <div class="about-accordion" id="aboutAccordion">
@@ -306,8 +486,9 @@
         </section>
 
         <!-- Équipe -->
-        <section class="team about-team pt-8">
-            <div class="d-flex-center pb-5">
+        <section class="about-section team about-team">
+            <div class="about-sec-head">
+                <span class="about-eyebrow">Les visages derrière LLABB</span>
                 <h2 class="heading-lg">Notre équipe</h2>
             </div>
             <div class="team-grid">
@@ -332,6 +513,15 @@
                 @endforeach
             </div>
         </section>
+
+        <!-- Bandeau CTA final -->
+        <div class="about-cta-banner">
+            <div>
+                <h3>Prêt à accélérer votre transformation digitale ?</h3>
+                <p>Échangeons sur vos enjeux IA, web ou IT pour bâtir une solution adaptée à votre croissance.</p>
+            </div>
+            <a href="{{ route('contact') }}" class="btn btn-primary">Discuter avec notre équipe</a>
+        </div>
 
     </div>
 </div>
