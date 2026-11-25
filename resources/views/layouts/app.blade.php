@@ -260,6 +260,59 @@
     width: 100% !important;
     height: 100% !important;
 }
+
+/* Cartes de services : le texte ne sort plus de la carte (points de suspension) */
+.main .main-content .service-cards-modern .services-grid .service-card {
+    overflow: hidden;
+}
+.main .main-content .service-cards-modern .services-grid .service-card .service-description {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+.main .main-content .service-cards-modern .services-grid .service-card .service-description h3,
+.main .main-content .service-cards-modern .services-grid .service-card .service-description p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+.main .main-content .service-cards-modern .services-grid .service-card .service-description h3 {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+.main .main-content .service-cards-modern .services-grid .service-card .service-description p {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+}
+
+/* Cartes du blog : image à taille fixe, texte coupé avec des points de suspension */
+.main .main-content .blog .blog-grid .blog-card .blog-image {
+    flex: 0 0 180px;
+    height: 180px;
+}
+.main .main-content .blog .blog-grid .blog-card .blog-content {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+}
+.main .main-content .blog .blog-grid .blog-card .blog-title,
+.main .main-content .blog .blog-grid .blog-card .blog-excerpt {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+.main .main-content .blog .blog-grid .blog-card .blog-title {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+.main .main-content .blog .blog-grid .blog-card .blog-excerpt {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    min-height: 0;
+}
     </style>
 </head>
 <body class="body-1">
