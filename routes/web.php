@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\NouvelleController;
 use App\Http\Controllers\Admin\CompteRenduController;
+use App\Http\Controllers\Admin\AboutContentController;
+use App\Http\Controllers\Admin\AboutValueController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
@@ -66,6 +68,12 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('comptes-rendus', CompteRenduController::class)
         ->parameters(['comptes-rendus' => 'compteRendu'])
         ->names('rapports');
+            Route::get('a-propos', [AboutContentController::class, 'edit'])->name('about.edit');
+    Route::put('a-propos', [AboutContentController::class, 'update'])->name('about.update');
+    Route::resource('valeurs', AboutValueController::class)
+        ->except(['show'])
+        ->parameters(['valeurs' => 'valeur'])
+        ->names('valeurs');
 
    
 });

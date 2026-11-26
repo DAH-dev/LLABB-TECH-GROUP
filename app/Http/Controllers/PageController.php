@@ -14,10 +14,12 @@ class PageController extends Controller
 {
     public function about()
     {
-        $teamMembers = TeamMember::orderBy('ordre')->get();
-
         return view('about', [
-            'teamMembers' => $teamMembers,
+            'about' => \App\Models\AboutContent::first() ?? new \App\Models\AboutContent(),
+            'values' => \App\Models\AboutValue::orderBy('ordre')->get(),
+            'services' => \App\Models\Service::where('est_actif', true)->orderBy('ordre')->get(),
+            'teamMembers' => \App\Models\TeamMember::orderBy('ordre')->get(),
+            'projectsCount' => \App\Models\Project::count(),
         ]);
     }
 

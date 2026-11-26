@@ -129,6 +129,8 @@
             <a href="{{ route('admin.articles.index') }}" class="{{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">Blog</a>
             <a href="{{ route('admin.nouvelles.index') }}" class="{{ request()->routeIs('admin.nouvelles.*') ? 'active' : '' }}">Nouvelles</a>
             <a href="{{ route('admin.team.index') }}" class="{{ request()->routeIs('admin.team.*') ? 'active' : '' }}">Équipe</a>
+            <a href="{{ route('admin.about.edit') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">À propos</a>
+            <a href="{{ route('admin.valeurs.index') }}" class="{{ request()->routeIs('admin.valeurs.*') ? 'active' : '' }}">Valeurs</a>
             <a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">Témoignages</a>
             <a href="{{ route('admin.pricing.index') }}" class="{{ request()->routeIs('admin.pricing.*') ? 'active' : '' }}">Tarifs</a>
             <a href="{{ route('admin.faq.index') }}" class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">FAQ</a>
