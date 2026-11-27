@@ -16,7 +16,7 @@ class SiteSetting extends Model
         'competence_3_nom', 'competence_3_pourcentage',
         'annees_experience', 'nb_projets', 'nb_clients', 'nb_tickets_resolus',
         'telephone', 'email_contact', 'adresse',
-        'lien_facebook', 'lien_twitter', 'lien_linkedin', 'lien_instagram',
+        'lien_facebook', 'lien_telegram', 'lien_linkedin', 'lien_instagram',
         'seo_titre', 'seo_description',
     ];
 }

@@ -39,9 +39,9 @@
                    style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
         </div>
 
-        <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Twitter / X</label>
-            <input type="text" name="lien_twitter" value="{{ old('lien_twitter', $setting->lien_twitter) }}"
+                <div class="form-group" style="margin-bottom:16px;">
+            <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Telegram</label>
+            <input type="text" name="lien_telegram" value="{{ old('lien_telegram', $setting->lien_telegram) }}" placeholder="https://t.me/..."
                    style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
         </div>
 

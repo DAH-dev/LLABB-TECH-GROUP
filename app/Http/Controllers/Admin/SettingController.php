@@ -24,7 +24,7 @@ class SettingController extends Controller
             'email_contact' => 'nullable|email|max:255',
             'adresse' => 'nullable|string|max:255',
             'lien_facebook' => 'nullable|string|max:255',
-            'lien_twitter' => 'nullable|string|max:255',
+            'lien_telegram' => 'nullable|string|max:255',
             'lien_linkedin' => 'nullable|string|max:255',
             'lien_instagram' => 'nullable|string|max:255',
             'seo_titre' => 'nullable|string|max:255',
