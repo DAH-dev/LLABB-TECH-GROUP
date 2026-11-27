@@ -359,8 +359,11 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                             </button>
                         </span>
-                        <ul class="submenu">
+                        <!-- <ul class="submenu">
                             <li><a href="{{ route('pricing') }}">Tarifs</a></li>
+                        </ul> -->
+                                                <ul class="submenu">
+                            <li><a href="{{ route('portfolio') }}">Portfolio</a></li>
                         </ul>
                     </li>
 
@@ -371,9 +374,9 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                             </button>
                         </span>
-                        <ul class="submenu">
+                        <!-- <ul class="submenu">
                             <li><a href="{{ route('portfolio') }}">Portfolio</a></li>
-                        </ul>
+                        </ul> -->
                     </li>
 
                     <li><a href="{{ route('blog') }}" class="nav-link">Blog</a></li>

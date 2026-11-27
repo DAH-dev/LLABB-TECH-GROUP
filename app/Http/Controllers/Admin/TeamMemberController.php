@@ -35,6 +35,9 @@ class TeamMemberController extends Controller
             unset($validated['photo']);
         }
 
+        // Ordre facultatif : s'il est vide, le membre passe en dernier
+        $validated['ordre'] = $validated['ordre'] ?? ((int) TeamMember::max('ordre') + 1);
+
         TeamMember::create($validated);
 
         return redirect()->route('admin.team.index')->with('success', 'Membre ajouté avec succès.');
@@ -60,6 +63,9 @@ class TeamMemberController extends Controller
             unset($validated['photo']);
         }
 
+        // Ordre facultatif : s'il est vide, on garde l'ordre actuel
+        $validated['ordre'] = $validated['ordre'] ?? $team->ordre ?? 0;
+
         $team->update($validated);
 
         return redirect()->route('admin.team.index')->with('success', 'Membre mis à jour avec succès.');
@@ -84,7 +90,9 @@ class TeamMemberController extends Controller
             'bio' => 'nullable|string',
             'photo' => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,svg,avif,bmp|max:20480',
             'lien_linkedin' => 'nullable|string|max:255',
-            'lien_twitter' => 'nullable|string|max:255',
+            'lien_facebook' => 'nullable|string|max:255',
+            'lien_telegram' => 'nullable|string|max:255',
+            'lien_instagram' => 'nullable|string|max:255',
             'ordre' => 'nullable|integer',
         ]);
     }

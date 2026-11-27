@@ -9,13 +9,15 @@ class TeamMember extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nom',
-        'poste',
-        'photo',
-        'bio',
-        'lien_linkedin',
-        'lien_twitter',
-        'ordre',
-    ];
+protected $fillable = [
+    'nom',
+    'poste',
+    'bio',
+    'photo',
+    'lien_linkedin',
+    'lien_facebook',
+    'lien_telegram',
+    'lien_instagram',
+    'ordre',
+];
 }

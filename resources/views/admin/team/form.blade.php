@@ -50,22 +50,40 @@
             </p>
         </div>
 
-        <div style="display:flex; gap:16px;">
-            <div class="form-group" style="margin-bottom:16px; flex:1;">
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+            <div class="form-group" style="margin-bottom:16px; flex:1; min-width:200px;">
                 <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">LinkedIn</label>
-                <input type="text" name="lien_linkedin" value="{{ old('lien_linkedin', $member->lien_linkedin) }}"
+                <input type="text" name="lien_linkedin" value="{{ old('lien_linkedin', $member->lien_linkedin) }}" placeholder="https://linkedin.com/in/..."
                        style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
             </div>
-            <div class="form-group" style="margin-bottom:16px; flex:1;">
-                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Twitter / X</label>
-                <input type="text" name="lien_twitter" value="{{ old('lien_twitter', $member->lien_twitter) }}"
+            <div class="form-group" style="margin-bottom:16px; flex:1; min-width:200px;">
+                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Facebook</label>
+                <input type="text" name="lien_facebook" value="{{ old('lien_facebook', $member->lien_facebook) }}" placeholder="https://facebook.com/..."
                        style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
             </div>
-            <div class="form-group" style="margin-bottom:16px; width:100px;">
-                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Ordre</label>
-                <input type="number" name="ordre" value="{{ old('ordre', $member->ordre) }}"
+        </div>
+
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+            <div class="form-group" style="margin-bottom:16px; flex:1; min-width:200px;">
+                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Telegram</label>
+                <input type="text" name="lien_telegram" value="{{ old('lien_telegram', $member->lien_telegram) }}" placeholder="https://t.me/..."
                        style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
             </div>
+            <div class="form-group" style="margin-bottom:16px; flex:1; min-width:200px;">
+                <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Instagram</label>
+                <input type="text" name="lien_instagram" value="{{ old('lien_instagram', $member->lien_instagram) }}" placeholder="https://instagram.com/..."
+                       style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:24px; width:200px;">
+            <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px;">Ordre (facultatif)</label>
+            <input type="number" name="ordre" value="{{ old('ordre', $member->ordre) }}" placeholder="Auto"
+                   style="width:100%; padding:10px 12px; border:1px solid #e0e0e0; border-radius:4px;">
+            @error('ordre')
+                <p style="font-size:0.78rem; color:#c0392b; margin-top:4px;">{{ $message }}</p>
+            @enderror
+            <p style="font-size:0.78rem; color:#5c6b84; margin-top:4px;">Laisse vide : le membre passe en dernier.</p>
         </div>
 
         <div style="display:flex; gap:12px;">
